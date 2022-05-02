@@ -175,9 +175,9 @@ class NavienSmartControl:
     """The main NavienSmartControl class"""
 
     # The Navien server.
-    navienServer = "cnst2.kdiwin.com.cn"
+    navienServer = "privacy.naviensmartcontrol.com"
     navienWebServer = "https://" + navienServer
-    navienServerSocketPort = 6001
+    navienServerSocketPort = 443
 
     def __init__(self, userID, passwd):
         """
