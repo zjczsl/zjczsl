@@ -175,7 +175,7 @@ class NavienSmartControl:
     """The main NavienSmartControl class"""
 
     # The Navien server.
-    navienServer = "privacy.naviensmartcontrol.com"
+    navienServer = "3.37.208.52"
     navienWebServer = "https://" + navienServer
     navienServerSocketPort = 443
 
