@@ -175,7 +175,7 @@ class NavienSmartControl:
     """The main NavienSmartControl class"""
 
     # The Navien server.
-    navienServer = "ukst.naviensmartcontrol.com"
+    navienServer = "rust2.naviensmartcontrol.com"
     navienWebServer = "https://" + navienServer
     navienServerSocketPort = 6001
 
