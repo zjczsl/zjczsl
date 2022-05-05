@@ -17,11 +17,11 @@ __date__ = "3/15/2022"
 __license__ = "GPL"
 
 
-# Third party library; "pip install requests" if getting import errors.
-import requests
+# Third party library
+import aiohttp
 
-# We use raw sockets.
-import socket
+# We use asyncio for tcp i/o.
+import asyncio
 
 # We unpack structures.
 import struct
@@ -29,11 +29,11 @@ import struct
 # We use namedtuple to reduce index errors.
 import collections
 
-# We use binascii to convert some consts from hex.
-import binascii
-
 # We use Python enums.
 import enum
+
+# We need json support for parsing the REST API response
+import json
 
 
 class ControlType(enum.Enum):
@@ -175,7 +175,7 @@ class NavienSmartControl:
     """The main NavienSmartControl class"""
 
     # The Navien server.
-    navienServer = "uscv2.naviensmartcontrol.com"
+    navienServer = "cnst2.kdiwin.com.cn"
     navienWebServer = "https://" + navienServer
     navienServerSocketPort = 6001
 
@@ -199,9 +199,16 @@ class NavienSmartControl:
         :return: The REST API response
         """
         async with aiohttp.ClientSession() as session:
-            async with session.post(NavienSmartControl.navienWebServer + "/api/requestDeviceList", json={"userID": self.userID, "password": self.passwd}) as response:
+            async with session.post(NavienSmartControl.navienWebServer + "/mobile_login_check.asp", json={"userID": self.userID, "password": self.passwd}) as response:
                 # If an error occurs this will raise it, otherwise it returns the gateway list.
                 return await self.handleResponse(response)
+            
+    async def gatewayList(self, encodedUserID):
+        # Get the list of connected devices.
+        response = requests.post(NavienSmartControl.navienWebServer + '/mobile_gateway_list.asp', headers=NavienSmartControl.stealthyHeaders, data={'UserID': encodedUserID, 'Ticket':'0'})
+
+        # The server replies with a pipe separated response.
+        return self.handleResponse(response)
 
     async def handleResponse(self, response):
         """
