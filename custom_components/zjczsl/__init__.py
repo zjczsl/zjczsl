@@ -1,4 +1,4 @@
-"""The Navien NaviLink Water Heater Integration."""
+"""The Navien NavienSmartTok Water Heater Integration."""
 from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
@@ -23,29 +23,29 @@ from .const import DOMAIN
 PLATFORMS: list[str] = ["water_heater","sensor"]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up Navien NaviLink Water Heater Integration from a config entry."""
+    """Set up Navien NavienSmartTok Water Heater Integration from a config entry."""
 
     hass.data.setdefault(DOMAIN, {})
-    navilink = NavienSmartControl(entry.data["username"],entry.data["password"])
-    gateways = await navilink.login()
+    NavienSmartTok = NavienSmartControl(entry.data["username"],entry.data["password"])
+    gateways = await NavienSmartTok.login()
 
     async def _update_method():
         """Get the latest data from Navien."""
         deviceStates = {}
         try:
             for gateway in gateways:
-                channelInfo = await navilink.connect(gateway["GID"])
+                channelInfo = await NavienSmartTok.connect(gateway["GID"])
                 deviceStates[gateway["GID"]] = {}
                 deviceStates[gateway["GID"]]["channelInfo"] = channelInfo
                 for channelNum in range(1,4):
                     if channelInfo["channel"][str(channelNum)]["deviceSorting"] > 0:
                         for deviceNum in range(1,channelInfo["channel"][str(channelNum)]["deviceCount"] + 1):
-                            state = await navilink.sendStateRequest(gateway["GID"], channelNum, deviceNum)
-                            state = navilink.convertState(state,channelInfo["channel"][str(channelNum)]["deviceTempFlag"])
+                            state = await NavienSmartTok.sendStateRequest(gateway["GID"], channelNum, deviceNum)
+                            state = NavienSmartTok.convertState(state,channelInfo["channel"][str(channelNum)]["deviceTempFlag"])
                             deviceStates[gateway["GID"]]["state"] = {}
                             deviceStates[gateway["GID"]]["state"][str(channelNum)] = {}
                             deviceStates[gateway["GID"]]["state"][str(channelNum)][str(deviceNum)] = state
-            await navilink.disconnect()
+            await NavienSmartTok.disconnect()
         except:
             raise UpdateFailed
         return deviceStates
