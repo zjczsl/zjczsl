@@ -1,4 +1,4 @@
-"""Support for Navien NaviLink sensors."""
+"""Support for Navien NavienSmartTok sensors."""
 import logging
 
 from homeassistant.components.sensor import (
