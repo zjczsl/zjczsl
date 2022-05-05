@@ -1,5 +1,5 @@
 {
-  "domain": "NavienSmartTok2_water_heater",
+  "domain": "navien_water_heater",
   "name": "Navien Smart Tok Water Heater Integration",
   "version": "0.0.9",
   "config_flow": true,
