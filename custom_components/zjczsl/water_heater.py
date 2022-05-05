@@ -1,4 +1,4 @@
-"""Support for Navien NaviLink water heaters."""
+"""Support for Navien NavienSmartTok water heaters."""
 import logging
 
 from homeassistant.components.water_heater import (
