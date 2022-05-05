@@ -1,9 +1,9 @@
 {
   "domain": "navien_water_heater",
-  "name": "Navien NaviLink Water Heater Integration",
-  "version": "0.0.2",
+  "name": "Navien Smart Tok Water Heater Integration",
+  "version": "0.0.9",
   "config_flow": true,
-  "documentation": "https://www.github.com/nikshriv/hass_navien_water_heater",
+  "documentation": "https://github.com/zjczsl/zjczsl",
   "requirements": [],
   "ssdp": [],
   "zeroconf": [],
