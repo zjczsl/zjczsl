@@ -6,12 +6,12 @@
           "username": "Username",
           "password": "Password"
         },
-        "title": "NaviLink Credentials",
-        "description": "Please enter your NaviLink account credentials"
+        "title": "NavienSmartTok Credentials",
+        "description": "Please enter your NavienSmartTok account credentials"
       }
     },
     "error": {
-      "invalid_auth": "Invalid NaviLink user credentials",
+      "invalid_auth": "Invalid NavienSmartTok user credentials",
       "unknown": "Unknown error"
     },
     "abort": {
