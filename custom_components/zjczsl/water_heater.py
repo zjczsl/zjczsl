@@ -36,23 +36,23 @@ async def async_setup_entry(
 ) -> None:
     """Set up Navien water heater based on a config entry."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
-    navilink = NavienSmartControl(entry.data["username"],entry.data["password"])
+    NavienSmartTok = NavienSmartControl(entry.data["username"],entry.data["password"])
     devices = []
     deviceNum = '1'
     for gateway in coordinator.data:
         for channel in coordinator.data[gateway]["state"]:
-            devices.append(NavienWaterHeaterEntity(coordinator, navilink, gateway, channel, deviceNum))
+            devices.append(NavienWaterHeaterEntity(coordinator, NavienSmartTok, gateway, channel, deviceNum))
     async_add_entities(devices)
 
 
 class NavienWaterHeaterEntity(CoordinatorEntity, WaterHeaterEntity):
     """Define a Navien water heater."""
  
-    def __init__(self, coordinator, navilink, gateway, channel, deviceNum):
+    def __init__(self, coordinator, NavienSmartTok, gateway, channel, deviceNum):
         """Pass coordinator to CoordinatorEntity."""
         super().__init__(coordinator)
         self.deviceNum = deviceNum
-        self.navilink = navilink
+        self.NavienSmartTok = NavienSmartTok
         self.channel = channel
         self.gateway = gateway
         self.channelInfo = coordinator.data[gateway]["channelInfo"]["channel"][channel]
@@ -144,25 +144,25 @@ class NavienWaterHeaterEntity(CoordinatorEntity, WaterHeaterEntity):
     async def async_set_temperature(self,**kwargs):
         """Set target water temperature"""
         if (target_temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
-            await self.navilink.connect(self.gateway)
-            await self.navilink.sendWaterTempControlRequest(self.gateway,int(self.channel),int(self.deviceNum),target_temp)
-            await self.navilink.disconnect()
+            await self.NavienSmartTok.connect(self.gateway)
+            await self.NavienSmartTok.sendWaterTempControlRequest(self.gateway,int(self.channel),int(self.deviceNum),target_temp)
+            await self.NavienSmartTok.disconnect()
             await self.coordinator.async_request_refresh()
         else:
             _LOGGER.error("A target temperature must be provided")
 
     async def async_turn_away_mode_on(self):
         """Turn away mode on."""
-        await self.navilink.connect(self.gateway)
-        await self.navilink.sendPowerControlRequest(self.gateway,int(self.channel),int(self.deviceNum),2)
-        await self.navilink.disconnect()
+        await self.NavienSmartTok.connect(self.gateway)
+        await self.NavienSmartTok.sendPowerControlRequest(self.gateway,int(self.channel),int(self.deviceNum),2)
+        await self.NavienSmartTok.disconnect()
         await self.coordinator.async_request_refresh()
 
     async def async_turn_away_mode_off(self):
         """Turn away mode off."""
-        await self.navilink.connect(self.gateway)
-        await self.navilink.sendPowerControlRequest(self.gateway,int(self.channel),int(self.deviceNum),1)
-        await self.navilink.disconnect()
+        await self.NavienSmartTok.connect(self.gateway)
+        await self.NavienSmartTok.sendPowerControlRequest(self.gateway,int(self.channel),int(self.deviceNum),1)
+        await self.NavienSmartTok.disconnect()
         await self.coordinator.async_request_refresh()
         
     async def async_set_operation_mode(self,operation_mode):
@@ -170,7 +170,7 @@ class NavienWaterHeaterEntity(CoordinatorEntity, WaterHeaterEntity):
         mode = 2
         if operation_mode == STATE_GAS:
             mode = 1
-        await self.navilink.connect(self.gateway)
-        await self.navilink.sendPowerControlRequest(self.gateway,int(self.channel),int(self.deviceNum),mode)
-        await self.navilink.disconnect()
+        await self.NavienSmartTok.connect(self.gateway)
+        await self.NavienSmartTok.sendPowerControlRequest(self.gateway,int(self.channel),int(self.deviceNum),mode)
+        await self.NavienSmartTok.disconnect()
         await self.coordinator.async_request_refresh()
