@@ -5,17 +5,17 @@
             "reauth_successful": "Reauthorization successful"
         },
         "error": {
-            "invalid_auth": "Invalid NaviLink user credentials",
+            "invalid_auth": "Invalid NavienSmartTok user credentials",
             "unknown": "Unknown error"
         },
         "step": {
             "user": {
                 "data": {
-                    "password": "Password",
-                    "username": "Username"
+                    "password": "MyPassword",
+                    "username": "MyUsername"
                 },
-                "description": "Please enter your NaviLink account credentials",
-                "title": "NaviLink Credentials"
+                "description": "Please enter your NavienSmartTok account credentials",
+                "title": "NavienSmartTok Credentials"
             }
         }
     }
